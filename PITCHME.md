@@ -1,5 +1,7 @@
-# Load Testing with Gatling
+## Load Testing with Gatling
 ![Gatling Logo](img/gatling-logo.png)
+
+---
 
 Doug Fitzmaurice - Ents24
 
@@ -9,15 +11,11 @@ Doug Fitzmaurice - Ents24
 
 ## Motivation
 
-+++
-
 Moving from this:
-
-+++
 
 To this:
 
-+++
+---
 
 * How do we ensure stability?
 * How many users can we handle?
@@ -37,13 +35,53 @@ To this:
 
 ---
 
+```
+
+================================================================================
+2017-05-07 12:49:45                                          25s elapsed
+---- Requests ------------------------------------------------------------------
+> Global                                                   (OK=702    KO=0     )
+> ticket                                                   (OK=53     KO=0     )
+> search                                                   (OK=50     KO=0     )
+> event                                                    (OK=128    KO=0     )
+> misc                                                     (OK=188    KO=0     )
+> favicon.ico                                              (OK=147    KO=0     )
+> mobile-search-icon.svg                                   (OK=40     KO=0     )
+> logo_mobile-white.png                                    (OK=40     KO=0     )
+> artist                                                   (OK=28     KO=0     )
+> index                                                    (OK=5      KO=0     )
+> stream                                                   (OK=6      KO=0     )
+> venue                                                    (OK=15     KO=0     )
+> film                                                     (OK=2      KO=0     )
+
+---- Desktop Users -------------------------------------------------------------
+[---                                                                       ]  0%
+          waiting: 6424   / active: 236    / done:0
+---- Mobile Users --------------------------------------------------------------
+[---                                                                       ]  0%
+          waiting: 3025   / active: 95     / done:0
+================================================================================
+```
+
+---
+![Gatling Overview](img/gatling_screenshot_1.png)
+
+---
+![Gatling Percedntiles](img/gatling_screenshot_2.png)
+
+---
+![Gatling Responses](img/gatling_screenshot_3.png)
+
+---
+![Gatling requests](img/gatling_screenshot_4.png)
+
+
+---
+
 ```scala
 atOnceUsers(20)
 rampUsers(10) over(20 seconds)
 ```
-
----
-
 
 ---
 
