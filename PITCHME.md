@@ -1,7 +1,9 @@
 # Load Testing with Gatling
-![Gatling Logo](images/gatling.png)
+![Gatling Logo](img/gatling-logo.png)
 
-Doug Fitzmaurice - Ents24 Ltd
+Doug Fitzmaurice - Ents24
+
+![Ents24 Logo](img/ents24-logo.png)
 
 ---
 
@@ -40,6 +42,53 @@ atOnceUsers(20)
 rampUsers(10) over(20 seconds)
 ```
 
+---
+
+
+---
+
+```scala
+val httpProtocol = http
+    .baseURLs("https://www.ents24.com")
+    .inferHtmlResources(WhiteList("""https://.*\.ents24\.com.*"""))
+    .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+    .acceptEncodingHeader("gzip, deflate, br")
+    .acceptLanguageHeader("en-US,en;q=0.5")
+    .disableFollowRedirect
+    .userAgentHeader("Gatling Load Test")
+    .hostNameAliases(Map("www.ents24.com" -> "52.212.206.40"))
+```
+
+---
+
+```scala
+val webAccessLog = csv("web-traffic.csv").circular
+val web = scenario("Desktop Users")
+      .repeat(6, "loops") {
+        feed(webAccessLog)
+        .exec(
+          http("${Type}")
+          .get("${Path}")
+          .check(status.not(500))
+        )
+        .pause(40)
+```
+
+---
+
+```scala
+setUp(
+  web.inject(
+    constantUsersPerSec(3) during(120 seconds),
+    constantUsersPerSec(2) during(600 seconds),
+    constantUsersPerSec(3) during(120 seconds),
+    constantUsersPerSec(2) during(120 seconds),
+    constantUsersPerSec(3) during(120 seconds),
+    constantUsersPerSec(2) during(120 seconds),
+    constantUsersPerSec(3) during(1000 seconds)
+  )
+).maxDuration(20 minutes).protocols(httpProtocol)
+```
 ---
 
 ## Log Replay
